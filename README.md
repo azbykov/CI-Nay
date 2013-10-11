@@ -1,7 +1,7 @@
 # Express Yandex Money Logger
 
 
-express-yandex-money-logger предоставляет middlewares для логирования запросов приложения express.js. Он использует "белые списки", чтобы выбрать свойства из запроса и объектов ответа.
+express-yandex-money-logger предоставляет middlewares для логирования запросов приложения express.js. Он использует "white list", чтобы выбрать свойства из запроса и объектов ответа.
 Для передачи логов используется модуль yandex-money-logger
 
 
@@ -10,12 +10,12 @@ express-yandex-money-logger предоставляет middlewares для лог
 
 ### Логирование запросов
 
-Используем `expressWinston.logger(options)` to create a middleware to log your HTTP requests.
+Используем `expressLogger.logger(options)` создаем middleware для логирования HTTP запросов.
 
 ``` js
 
-    app.use(expressWinston.logger());
-    app.use(app.router); // notice how the router goes after the logger.
+    app.use(expressLogger.logger());
+    app.use(app.router);
 ```
 
 
@@ -44,7 +44,6 @@ express-yandex-money-logger предоставляет middlewares для лог
     app.use(app.router);
 
     app.get('/error', function(req, res, next) {
-      // here we cause an error in the pipeline so we see express-winston in action.
       return next(new Error("This is an error and it should be logged to the console"));
     });
 
@@ -83,7 +82,7 @@ Yandex Money Logger
 ========
 ### Логер, надстройка над модулем [winston](https://github.com/flatiron/winston)
 
-Возвращает объект логера(winston) настроенным через параметры.
+Возвращает объект логера(winston).
 
 Новые возможности:
 
@@ -99,7 +98,7 @@ logger.log('info', 'this is a info message', { tag: 'tag-value'});
 logger.info('this is a info message 2', { tag: 'tag-value'});
 ~~~
 
-в конструктор можно передавать различные параметры:
+В конструктор можно передавать различные параметры:
 
  * reqCount {Number} - id запроса
  * buffering {Boolean} - флаг буферизации логов
@@ -107,14 +106,14 @@ logger.info('this is a info message 2', { tag: 'tag-value'});
 
 ### Буферизация
 
-буферизация реализована с помощью модуля yandex-money-logger-buffer
+Буферизация реализована с помощью модуля yandex-money-logger-buffer
 
 ~~~js
 var logger = require('yandex-money-logger')({buffering: true});
 logger.info('this is a info message', { tag: 'tag-value'});
 ~~~
 
-Что бы вывести логи необходимо
+Что бы вывести логи необходимо:
 
 ~~~js
 // Выведет логи в доступными транспортами
@@ -145,5 +144,60 @@ logger.wrapProfiler(profileMe, args);
 ~~~
 
 Результаты профилирования вернуться доступными транспортами
+
+
+
+Yandex Money Logger Buffer
+========
+### Логер, совместим с модулем [winston](https://github.com/flatiron/winston)
+
+Пишет все логи в глобальный объект buffer.
+По умолчанию buffer имеет лимит в 8кб
+
+Выводит в логи, когда объект buffer достиг лимита или вызвана команда flush
+
+Usage
+=====
+
+``` js
+var logger = require('yandex-money-logger-buffer').logBuffer();
+logger.log('info', 'this is a info message', { tag: 'tag-value'});
+logger.info('this is a info message 2', { tag: 'tag-value'});
+```
+
+В конструктор можно передавать различные параметры:
+
+ * reqCount {Number} - id запроса
+
+Чтобы вывести логи необходимо:
+
+``` js
+// Выведет логи в доступным транспортом
+logger.flush();
+// или
+// Вернет объект buffer
+console.log('%j', logger.getBuffer());
+```
+
+
+Чтобы увеличить или уменьшить лимит, необходимо:
+
+``` js
+require('yandex-money-logger-buffer').setBufferLimit(100000);
+```
+
+Логи сначала группируются по id воркеру (если воркеров нет, вместо id воркера будет 'master').
+Потом группируются по id запроса (по умолчанию 0).
+
+
+## Пример логов
+``` js
+Thu Oct 10 2013 19:37:54 GMT+0400 (MSK) - workerId: master - requestCount: 0 - info: log: Express server listening on port 3000 25376_pid
+Thu Oct 10 2013 19:38:02 GMT+0400 (MSK) - workerId: master - requestCount: 0 - info: HTTP GET / req: {url: /, httpVersion: 1.1, originalUrl: /, , }, res: {statusCode: 200}, responseTime: 332
+Thu Oct 10 2013 19:38:02 GMT+0400 (MSK) - workerId: master - requestCount: 1 - info: HTTP GET /css/style.css req: {url: /css/style.css, httpVersion: 1.1, originalUrl: /css/style.css, , }, res: {statusCode: 304}, responseTime: 4
+Thu Oct 10 2013 19:38:02 GMT+0400 (MSK) - workerId: master - requestCount: 1 - info: HTTP GET /css/bootstrap.css req: {url: /css/bootstrap.css, httpVersion: 1.1, originalUrl: /css/bootstrap.css, , }, res: {statusCode: 304}, responseTime: 1
+Thu Oct 10 2013 19:38:02 GMT+0400 (MSK) - workerId: master - requestCount: 2 - info: HTTP GET /users req: {url: /users, httpVersion: 1.1, originalUrl: /users, , }, res: {statusCode: 304}, responseTime: 51
+Thu Oct 10 2013 19:38:02 GMT+0400 (MSK) - workerId: master - requestCount: 2 - info: list of users 
+```
 
 
