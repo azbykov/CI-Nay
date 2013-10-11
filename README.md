@@ -1,7 +1,7 @@
 # Express Yandex Money Logger
 
 
-express-yandex-moneylogger предоставляет middlewares для логирования запросов приложения express.js. Он использует "белые списки", чтобы выбрать свойства из запроса и объектов ответа.
+express-yandex-money-logger предоставляет middlewares для логирования запросов приложения express.js. Он использует "белые списки", чтобы выбрать свойства из запроса и объектов ответа.
 Для передачи логов используется модуль yandex-money-logger
 
 
