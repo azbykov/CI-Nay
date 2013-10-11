@@ -1,12 +1,12 @@
 # Express Yandex Money Logger
 
 
-> yandex-money-logger middleware for express.js
+express-yandex-moneylogger предоставляет middlewares для логирования запросов приложения express.js. Он использует "белые списки", чтобы выбрать свойства из запроса и объектов ответа.
+Для передачи логов используется модуль yandex-money-logger
+
 
 ## Usage
 
-express-yandex-moneylogger предоставляет middlewares для логирования запросов приложения express.js. Он использует "белые списки", чтобы выбрать свойства из запроса и объектов ответа.
-Для передачи логов используется модуль yandex-money-logger
 
 ### Логирование запросов
 
@@ -107,7 +107,7 @@ logger.info('this is a info message 2', { tag: 'tag-value'});
 
 ### Буферизация
 
-буферизация реализована с помощью модуля yandex-money-buffer
+буферизация реализована с помощью модуля yandex-money-logger-buffer
 
 ~~~js
 var logger = require('yandex-money-logger')({buffering: true});
@@ -147,74 +147,3 @@ logger.wrapProfiler(profileMe, args);
 Результаты профилирования вернуться доступными транспортами
 
 
-
-
-
-
-# Express Yandex Money Logger
-
-
-> yandex-money-logger middleware for express.js
-
-## Usage
-
-express-yandex-moneylogger предоставляет middlewares для логирования запросов приложения express.js. Он использует "белые списки", чтобы выбрать свойства из запроса и объектов ответа.
-Для предачи логов используется модуль yandex-money-logger
-
-### Логирование запросов
-
-Используем `expressWinston.logger(options)` to create a middleware to log your HTTP requests.
-
-``` js
-
-    app.use(expressWinston.logger());
-    app.use(app.router); 
-```
-
-
-### Опции
-
-``` js
-    requestFilter // Пользовательский фильтр полей запроса
-    responseFilter// Пользовательский фильтр полей ответа
-```
-
-
-## Пример
-
-``` js
-    var express = require('express');
-    var expressLogger = require('express-yandex-money-logger');
-    var winston = require('winston'); // for transports.Console
-    var app = module.exports = express();
-
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-
-    // express-logger нужно установить раньше чем app.route
-    app.use(expressLogger.logger());
-
-    app.use(app.router);
-
-    app.get('/error', function(req, res, next) {
-      // here we cause an error in the pipeline so we see express-winston in action.
-      return next(new Error("This is an error and it should be logged to the console"));
-    });
-
-    app.get('/', function(req, res, next) {
-      res.write('This is a normal request, it should be logged to the console too');
-      res.end();
-    });
-
-    app.listen(3000, function(){
-      console.log("express-winston demo listening on port %d in %s mode", app.address().port, app.settings.env);
-    });
-```
-
-Открыв в браузере приложение мы увидим:
-
-```
-info: HTTP GET / url=/, httpVersion=1.1, originalUrl=/, , , statusCode=200, responseTime=294
-info: HTTP GET /css/style.css url=/css/style.css, httpVersion=1.1, originalUrl=/css/style.css, , , statusCode=304, responseTime=3
-info: HTTP GET /css/bootstrap.css url=/css/bootstrap.css, httpVersion=1.1, originalUrl=/css/bootstrap.css, , , statusCode=304, responseTime=1
-```
