@@ -1,6 +1,39 @@
-# winston [![Build Status](https://secure.travis-ci.org/flatiron/winston.png?branch=master)](http://travis-ci.org/flatiron/winston)
+# Debugger
+Инструмент для отладки приложения, используя unix-sockets и websockets(используя [sockJs](http://sockjs.org)).
+* [Collector](#collector)
+* [Unix-socket сервер](#unix-socket-сервер)
+* [Websockets сервер](#webscokets)
+* [Socket клиент](#socketClient)
+* [Websockets клиент](#websocketsClient)
 
-A multi-transport async logging library for node.js. <span style="font-size:28px; font-weight:bold;">&quot;CHILL WINSTON! ... I put it in the logs.&quot;</span>
+## Зачем
+Основная задача. Отслеживать отладочную информацию в режиме real-time.
+С сервиса, отладочная информация попадает на debugger-сервер и записывается в класс Collector
+
+
+
+##Collector
+``` js
+  var collector = require('collector');
+```
+Модуль для храннеия истории сообщения. Имеет функционал для добавления новой записи и получения данных.
+По умолчанию хранится не больше 30 записей.
+Добавление новой записи.
+``` js
+    collector.push(data);
+```
+Получение данных.
+``` js
+    // {Array}
+    var data = collector.getBuffer(); 
+```
+ 
+##Unix-socket сервер
+``` js
+    var server = require('./lib/socketServer');
+```
+
+
 
 ## Motivation
 Winston is designed to be a simple and universal logging library with support for multiple transports. A transport is essentially a storage device for your logs. Each instance of a winston logger can have multiple transports configured at different levels. For example, one may want error logs to be stored in a persistent remote location (like a database), but all logs output to the console or a local file.
