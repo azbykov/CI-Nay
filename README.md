@@ -1,15 +1,21 @@
 # Debugger
 Инструмент для отладки приложения, использующий unix-sockets и websockets([sockJs](http://sockjs.org)).
+##Компоненты
 * [Collector](#collector)
 * [Unix-socket сервер](#unix-socket-сервер)
 * [Socket клиент](#socket-клиент)
 * [Websocket сервер](#websocket-сервер)
 * [Websocket клиент](#websocket-клиент)
 
-## Зачем
+##Зачем
 Основная задача: отслеживать отладочную информацию в режиме real-time.
 С сервиса отладочная информация попадает на debugger-сервер и записывается в класс Collector.
 
+
+##Запуск
+``` bash
+  node app.js
+```
 
 
 ##Collector
