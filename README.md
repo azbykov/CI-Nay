@@ -55,14 +55,13 @@
 ``` js
    {
    	label: 'label', // Label
+   	timestamp: timestamp, // время в милисекундах
    	time: '+ 10ms', // Время от прошлого вызова
    	workerId: wId, // Id воркера 
-	clientIp: clientIp, // Ip клинета
-	message: common.log({
-		level : 'info', // Уровень(по умолчанию уровень всегда 'info')
-		message : msg, // Текст сообщения
-		meta : meta  // Мета-данные   
-	})
+	clientIp: clientIp, // Ip клинета,
+	message : msg, // Текст сообщения
+	meta : meta  // Мета-данные  
+	message: [чч:мм:сс:мс] [id воркера] [id запроса] [level] [текст сообщения] [мета-данные]
    }
 ```
 
