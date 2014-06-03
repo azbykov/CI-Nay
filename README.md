@@ -22,7 +22,7 @@
 * http://doc.yandex-team.ru/Tanker/api-reference/concepts/operations-translations.xml
 
 
-подключаем в `.bem/enb-make.js`:
+###Подключаем в `.bem/enb-make.js`:
 
 ```javascript
 var pushKeysToTanker = require('push-keys-to-tanker');
