@@ -22,8 +22,8 @@
 * http://doc.yandex-team.ru/Tanker/api-reference/concepts/operations-translations.xml
 
 
-###Подключаем в `.bem/enb-make.js`:
-
+###Подключение
+Подключаем в `.bem/enb-make.js`:
 ```javascript
 var pushKeysToTanker = require('push-keys-to-tanker');
 
